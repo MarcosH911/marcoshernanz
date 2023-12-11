@@ -19,17 +19,29 @@ function Page() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    let bmr;
+
+    if (knowsBodyFat && Number(bodyFat) <= 25) {
+      bmr = 370 + 21.6 * (1 - Number(bodyFat)) * Number(weight);
+    } else if (gender === "male") {
+      bmr = 10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) + 5;
+    } else {
+      bmr = 10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) - 161;
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h1>Macros Calculator</h1>
       <div>
+        <Label>System</Label>
         <Button onClick={() => setMeasureSystem("metric")}>Metric</Button>
         <Button onClick={() => setMeasureSystem("imperial")}>Imperial</Button>
       </div>
 
       <div>
+        <Label>Gender</Label>
         <Button onClick={() => setGender("male")}>Male</Button>
         <Button onClick={() => setGender("female")}>Female</Button>
       </div>
@@ -48,12 +60,14 @@ function Page() {
         />
       </div>
 
-      {knowsBodyFat && (
-        <div>
-          <Label>Body fat %</Label>
-          <Input value={bodyFat} onChange={(e) => setBodyFat(e.target.value)} />
-        </div>
-      )}
+      <div>
+        <Label>Body fat %</Label>
+        <Input
+          value={bodyFat}
+          onChange={(e) => setBodyFat(e.target.value)}
+          disabled={!knowsBodyFat}
+        />
+      </div>
 
       <div>
         <Label>Height</Label>
