@@ -20,6 +20,10 @@ function Page() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const bmr = calculateBmr();
+  };
+
+  const calculateBmr = (): number => {
     let metricWeight = Number(weight);
     let metricHeight = Number(height);
 
@@ -39,6 +43,8 @@ function Page() {
     } else {
       bmr = 10 * metricWeight + 6.25 * metricHeight - 5 * Number(age) - 161;
     }
+
+    return bmr;
   };
 
   return (
